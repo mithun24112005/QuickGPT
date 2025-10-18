@@ -15,10 +15,11 @@ await connectDB()
 
 // middle ware
 app.use(cors())
-app.use(express.json())
 
-// stripe webhooks
-app.post('/api/stripe',express.raw({type:'application/json'}),stripeWebhooks)
+// stripe webhooks - register RAW body route BEFORE express.json() so Stripe signature verification gets raw body
+app.post('/api/stripe', express.raw({type:'application/json'}), stripeWebhooks)
+
+app.use(express.json())
 
 // routes
 app.get('/',(req,res)=>{

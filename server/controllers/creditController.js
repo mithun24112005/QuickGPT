@@ -34,7 +34,8 @@ export const getPlans=async (req,res) => {
     }
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+// use fallback env var name in case of typo in .env
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_kEY)
 
 // api controller for purchasing plan
 export const purchasePlan=async (req,res) => {
