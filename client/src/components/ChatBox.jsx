@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 import { useAppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import Message from './Message'
+import toast from 'react-hot-toast'
 
 const ChatBox = () => {
   const containerRef = useRef(null)
-  const { selectedChat, theme } = useAppContext()
+  const { selectedChat, theme, user, token, setUser } = useAppContext()
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [mode, setMode] = useState('text')
@@ -13,7 +15,47 @@ const ChatBox = () => {
   const [isPublished, setIsPublished] = useState(false)
 
   const onSubmit = async (e) => {
-    e.preventDefault()
+    let promptCopy = prompt // preserve original prompt for error rollback
+    try {
+      e.preventDefault()
+      if (!user) return toast('login to send message')
+      if (!selectedChat?._id) return toast.error('Please select or create a chat first')
+
+      setLoading(true)
+      // show user message immediately
+      setMessages(prev => [...prev, { role: 'user', content: prompt, timestamp: Date.now(), isImage: false }])
+      setPrompt('')
+
+      // prepare auth header (accept token with or without "Bearer " prefix)
+      const authHeader = token ? (token.startsWith('Bearer ') ? token : `Bearer ${token}`) : ''
+
+      const { data } = await axios.post(
+        `/api/message/${mode}`,
+        { chatId: selectedChat._id, prompt: promptCopy, isPublished },
+        { headers: { Authorization: authHeader, 'Content-Type': 'application/json' } }
+      )
+
+      if (data.success) {
+        setMessages(prev => [...prev, data.reply])
+        // decrease credits locally
+        setUser(prev => {
+          if (!prev) return prev
+          return mode === 'image' ? { ...prev, credits: prev.credits - 2 } : { ...prev, credits: prev.credits - 1 }
+        })
+      } else {
+        toast.error(data.message || 'Request failed')
+        // restore prompt and remove optimistic user message
+        setPrompt(promptCopy)
+        setMessages(prev => prev.slice(0, -1))
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message || 'Something went wrong')
+      // restore prompt and remove optimistic user message
+      setPrompt(promptCopy)
+      setMessages(prev => prev.slice(0, -1))
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -66,8 +108,8 @@ const ChatBox = () => {
           <option className='dark:bg-purple-900' value="text">Text</option>
           <option className='dark:bg-purple-900' value="image">Image</option>
         </select>
-        <input onChange={(e) => setPrompt(e.target.value)} type="text" placeholder='Type your prompt here' className='flex-1 w-full text-sm outline-none' required />
-        <button disabled={loading} >
+        <input value={prompt} onChange={(e) => setPrompt(e.target.value)} type="text" placeholder='Type your prompt here' className='flex-1 w-full text-sm outline-none' required />
+        <button type="submit" disabled={loading} >
           <img src={loading ? assets.stop_icon : assets.send_icon} alt="" className='w-8 cursor-pointer' />
         </button>
       </form>

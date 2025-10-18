@@ -24,25 +24,36 @@ const Login = () => {
     try {
       // Form validation
       if (state === "register" && name.length < 3) {
+        setLoading(false)
         return toast.error("Name must be at least 3 characters long")
       }
       if (password.length < 6) {
+        setLoading(false)
         return toast.error("Password must be at least 6 characters long")
       }
 
-      const url = state === "login" ? '/api/user/login' : '/api/user/register'
-      const { data } = await axios.post(url, { name, email, password })
+      const payload = state === "login" ? 
+        { email, password } : 
+        { name, email, password }
+
+      const { data } = await axios.post(`/api/user/${state}`, payload)
       
       if (data.success) {
-        setToken(data.token)
-        localStorage.setItem('token', data.token)
+        const token = `Bearer ${data.token}`
+        setToken(token)
+        localStorage.setItem('token', token)
         resetForm()
         toast.success(`Successfully ${state === "login" ? "logged in" : "registered"}!`)
       } else {
-        toast.error(data.message)
+        toast.error(data.message || "Authentication failed")
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong")
+      console.error('Login error:', error)
+      toast.error(
+        error.response?.data?.message || 
+        error.message || 
+        "Authentication failed. Please try again."
+      )
     } finally {
       setLoading(false)
     }

@@ -21,17 +21,22 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             const confirm = window.confirm('Are you sure you want to delete this chat?');
             if (!confirm) return;
 
-            const { data } = await axios.delete('/api/chat/delete', {
-                headers: { Authorization: `Bearer ${token}` },
-                data: { chatId }, // Pass chatId in the request body
-            });
+            const { data } = await axios.post('/api/chat/delete', 
+                { chatId }, 
+                {
+                    headers: { 
+                        Authorization: token,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
 
             if (data.success) {
                 setChats(prev => prev.filter(chat => chat._id !== chatId));
-                await fetchUsersChats(); // Ensure this function is defined and used correctly
                 toast.success(data.message);
             }
         } catch (error) {
+            console.error('Delete error:', error);
             toast.error(error.response?.data?.message || error.message);
         }
     }
