@@ -9,23 +9,25 @@ import './assets/prism.css'
 import Loading from './pages/Loading'
 import { useAppContext } from './context/AppContext'
 import Login from './pages/Login'
+import {Toaster} from 'react-hot-toast'
 
 const App = () => {
-  const {user}=useAppContext()
-
+  const {user, loadingUser} = useAppContext()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const {pathname}=useLocation()
+  const {pathname} = useLocation()
 
-  if(pathname==='/Loading') return <Loading/>
-  
+  // Add pathname check for Loading route
+  if(pathname === '/loading' || loadingUser) return <Loading/> // Fix pathname case
+
   return (
     <>
+      <Toaster position="top-center" /> {/* Add position prop */}
       {!isMenuOpen && (
         <img
           onClick={() => setIsMenuOpen(true)}
           src={assets.menu_icon}
           alt="menu"
-          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden not-dark:invert"
+          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden dark:invert" // Fix dark mode class
         />
       )}
 
