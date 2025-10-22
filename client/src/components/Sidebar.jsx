@@ -70,7 +70,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                                     {moment(chat.updatedAt).fromNow()}
                                 </p>
                             </div>
-                            <img onClick={e => toast.promise(deleteChat(e, chat._id), { loading: 'deleting...' })} src={assets.bin_icon} alt="" className='hidden group-hover:block w-4 cursor-pointer not-dark:invert ' />
+                            <img onClick={e => toast.promise(deleteChat(e, chat._id), { loading: 'deleting...' })} src={assets.bin_icon} alt="" className='block md:hidden group-hover:block w-4 cursor-pointer not-dark:invert' />
                         </div>
                     ))
                 }
@@ -116,7 +116,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             <div className='flex items-center gap-3 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer group '>
                 <img src={assets.user_icon} alt="" className='w-7 rounded-full' />
                 <p className='flex-1 text-sm dark:text-primary truncate '>{user ? user.name : 'Login Your Account'}</p>
-                {user && <img onClick={logout} src={assets.logout_icon} className='h-5 cursor-pointer hidden not-dark:invert group-hover:block' />}
+                {user && <img onClick={logout} src={assets.logout_icon} className='h-5 cursor-pointer block md:hidden group-hover:block not-dark:invert' />}
             </div>
 
             <img onClick={() => setIsMenuOpen(false)} src={assets.close_icon} className='absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden not-dark:invert' alt="" />

@@ -26,13 +26,13 @@ const App = () => {
           onClick={() => setIsMenuOpen(true)}
           src={assets.menu_icon}
           alt="menu"
-          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden dark:invert"
+          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden dark:invert z-10"
         />
       )}
 
       {user ? (
-        <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a102b] dark:via-[#29184B] dark:to-[#531B81] dark:text-white transition-all duration-500">
-          <div className="flex h-screen w-screen">
+        <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a102b] dark:via-[#29184B] dark:to-[#531B81] dark:text-white transition-all duration-500 min-h-screen h-screen max-md:h-[100dvh]">
+          <div className="flex h-full w-screen">
             <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <Routes>
               <Route path="/" element={<ChatBox />} />
@@ -42,7 +42,7 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-gradient-to-b from-[#242124] to-[#000000] flex items-center justify-center h-screen w-screen">
+        <div className="bg-gradient-to-b from-[#242124] to-[#000000] flex items-center justify-center h-screen w-screen max-md:h-[100dvh]">
           <Login />
         </div>
       )}
