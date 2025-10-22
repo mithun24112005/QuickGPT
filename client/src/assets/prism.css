@@ -37,19 +37,64 @@ code[class*="language-"] *::selection {
 	}
 }
 
+/* Force translucent black backgrounds with maximum specificity */
 pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
-	overflow: auto;
-	background: #1e1e1e;
+	padding: 1em !important;
+	margin: .5em 0 !important;
+	overflow: auto !important;
+	background: rgba(0, 0, 0, 0.7) !important;
+	backdrop-filter: blur(10px) !important;
+	border: 1px solid rgba(128, 96, 159, 0.3) !important;
 }
 
 :not(pre) > code[class*="language-"] {
-	padding: .1em .3em;
-	border-radius: .3em;
-	color: #db4c69;
-	background: #1e1e1e;
+	padding: .1em .3em !important;
+	border-radius: .3em !important;
+	color: #db4c69 !important;
+	background: rgba(0, 0, 0, 0.7) !important;
+	backdrop-filter: blur(10px) !important;
+	border: 1px solid rgba(128, 96, 159, 0.2) !important;
 }
+
+/* Dark mode with translucent black background */
+html.dark pre[class*="language-"],
+.dark pre[class*="language-"] {
+	background: rgba(0, 0, 0, 0.7) !important;
+	border: 1px solid rgba(128, 96, 159, 0.3) !important;
+}
+
+html.dark :not(pre) > code[class*="language-"],
+.dark :not(pre) > code[class*="language-"] {
+	background: rgba(0, 0, 0, 0.7) !important;
+	border: 1px solid rgba(128, 96, 159, 0.2) !important;
+}
+
+/* Light mode with translucent black background */
+html:not(.dark) pre[class*="language-"],
+:not(.dark) pre[class*="language-"] {
+	background: rgba(0, 0, 0, 0.7) !important;
+	border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+html:not(.dark) :not(pre) > code[class*="language-"],
+:not(.dark) :not(pre) > code[class*="language-"] {
+	background: rgba(0, 0, 0, 0.7) !important;
+	border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Additional override for any conflicting styles */
+.reset-tw pre[class*="language-"] {
+	background: rgba(0, 0, 0, 0.7) !important;
+	backdrop-filter: blur(10px) !important;
+	border: 1px solid rgba(128, 96, 159, 0.3) !important;
+}
+
+.reset-tw :not(pre) > code[class*="language-"] {
+	background: rgba(0, 0, 0, 0.7) !important;
+	backdrop-filter: blur(10px) !important;
+	border: 1px solid rgba(128, 96, 159, 0.2) !important;
+}
+
 /*********************************************************
 * Tokens
 */

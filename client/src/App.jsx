@@ -26,7 +26,7 @@ const App = () => {
           onClick={() => setIsMenuOpen(true)}
           src={assets.menu_icon}
           alt="menu"
-          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden dark:invert z-10"
+          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden invert dark:invert-0 z-10"
         />
       )}
 
