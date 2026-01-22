@@ -17,8 +17,7 @@ export const registerUser=async (req,res) => {
         if(userExists){
             return res.json({success:false,message:"User already exists"})
         }
-        const hashedPassword = await bcrypt.hash(password, 10) // Hash the password
-        const user=await User.create({name,email,password:hashedPassword})
+        const user=await User.create({name,email,password})
         const token=generateToken(user._id)
         res.json({success:true,token})
     }
