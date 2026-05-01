@@ -76,11 +76,12 @@ export const imageMessageController = async (req, res) => {
         // encode the prompt 
         const encoded_prommpt = encodeURIComponent(prompt)
 
-        // construct image ai generation url
-        const generatedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}/ik-genimg-prompt-${encoded_prommpt}/quickgpt/${Date.now()}.png?tr=w-800,h-800`
+        // construct image ai generation url using Pollinations.ai (reliable and free)
+        // ImageKit's ik-genimg-prompt was throwing a 500 error due to missing add-ons or quota limits
+        const generatedImageUrl = `https://image.pollinations.ai/prompt/${encoded_prommpt}?width=800&height=800&nologo=true&seed=${Date.now()}`
 
-        // trigger generation by fetching from Imagekit
-        const aiImageResponse = await axios.get(generatedImageUrl, { responseType: "arraybuffer" })
+        // trigger generation by fetching from the AI provider (60s timeout for production safety)
+        const aiImageResponse = await axios.get(generatedImageUrl, { responseType: "arraybuffer", timeout: 60000 })
 
         // convert arraybuffer to base64 data URI
         const base64Image = Buffer.from(aiImageResponse.data, 'binary').toString('base64')

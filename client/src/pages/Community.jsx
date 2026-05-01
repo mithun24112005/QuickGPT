@@ -32,8 +32,8 @@ const Community = () => {
   if (loading) return <Loading />
 
   return (
-    <div className='p-6 pt-12 xl:px-12 2xl:px-20 w-full mx-auto h-full overflow-y-scroll bg-white dark:bg-[#1a102b]'>
-      <h2 className='text-xl font-semibold mb-6 text-gray-800 dark:text-purple-100'>Community Images</h2>
+    <div className='p-6 pt-12 xl:px-12 2xl:px-20 w-full mx-auto h-full overflow-y-scroll bg-transparent'>
+      <h2 className='text-xl font-medium tracking-tight mb-6 text-ink dark:text-dark-ink'>Community Images</h2>
       {images.length > 0 ? (
         <div className='flex flex-wrap max-sm:justify-center gap-5'>
           {images.map((item, index) => (
@@ -42,7 +42,7 @@ const Community = () => {
               href={item.imageUrl}
               target='_blank'
               rel='noopener noreferrer'
-              className='relative group block rounded-lg overflow-hidden border border-gray-200 dark:border-purple-700 shadow-sm hover:shadow-md transition-shadow duration-300 bg-white dark:bg-[#2c1850]'
+              className='relative group block rounded-[16px] overflow-hidden border border-hairline/50 dark:border-dark-hairline/50 bg-surface-card/60 dark:bg-dark-surface-card/60 backdrop-blur-md shadow-md hover:shadow-xl transition-all duration-300'
             >
               <img
                 src={item.imageUrl}
@@ -56,7 +56,7 @@ const Community = () => {
           ))}
         </div>
       ) : (
-        <p className='text-center text-gray-600 dark:text-purple-200 mt-10'>No Images Available.</p>
+        <p className='text-center text-muted dark:text-dark-muted mt-10'>No Images Available.</p>
       )}
     </div>
   )

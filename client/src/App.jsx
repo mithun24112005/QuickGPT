@@ -31,8 +31,13 @@ const App = () => {
       )}
 
       {user ? (
-        <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a102b] dark:via-[#29184B] dark:to-[#531B81] dark:text-white transition-all duration-500 min-h-screen h-screen max-md:h-[100dvh]">
-          <div className="flex h-full w-screen">
+        <div className="relative overflow-hidden bg-canvas dark:bg-dark-canvas text-ink dark:text-dark-ink transition-colors duration-500 min-h-screen h-screen max-md:h-[100dvh]">
+          {/* Glassmorphism Background Blobs */}
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-brand-pink/40 dark:bg-brand-pink/30 blur-[100px] pointer-events-none"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-brand-lavender/50 dark:bg-brand-lavender/30 blur-[120px] pointer-events-none"></div>
+          <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] rounded-full bg-brand-peach/40 dark:bg-brand-peach/20 blur-[90px] pointer-events-none"></div>
+          
+          <div className="relative flex h-full w-screen z-10 backdrop-blur-sm">
             <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <Routes>
               <Route path="/" element={<ChatBox />} />
@@ -42,8 +47,13 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-gradient-to-b from-[#242124] to-[#000000] flex items-center justify-center h-screen w-screen max-md:h-[100dvh]">
-          <Login />
+        <div className="relative overflow-hidden bg-canvas dark:bg-dark-canvas flex items-center justify-center h-screen w-screen max-md:h-[100dvh]">
+          {/* Glassmorphism Background Blobs */}
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-brand-teal/20 dark:bg-brand-teal/10 blur-[100px] pointer-events-none"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-brand-ochre/30 dark:bg-brand-ochre/10 blur-[120px] pointer-events-none"></div>
+          <div className="relative z-10">
+            <Login />
+          </div>
         </div>
       )}
     </>

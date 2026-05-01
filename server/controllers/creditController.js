@@ -1,4 +1,5 @@
 import Transaction from "../models/Transaction.js"
+import User from "../models/user.js"
 import Stripe from 'stripe'
 
 const plans=[
@@ -34,8 +35,7 @@ export const getPlans=async (req,res) => {
     }
 }
 
-// use fallback env var name in case of typo in .env
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_kEY)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 // api controller for purchasing plan
 export const purchasePlan=async (req,res) => {
@@ -70,7 +70,7 @@ export const purchasePlan=async (req,res) => {
             },
         ],
         mode: 'payment',
-        success_url:`${origin}/loading`,
+        success_url:`${origin}/loading?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url:`${origin}`,
         metadata:{transactionId:transaction._id.toString(),appId:'quickgpt'},
         expires_at:Math.floor(Date.now()/1000)+30*60,
@@ -79,5 +79,35 @@ export const purchasePlan=async (req,res) => {
         res.json({success:true,url:session.url})
     } catch (error) {
         res.json({success:false,message:error.message})
+    }
+}
+
+// verify payment controller
+export const verifyPayment = async (req, res) => {
+    try {
+        const { sessionId } = req.body;
+        if (!sessionId) {
+            return res.json({ success: false, message: "Missing session ID" });
+        }
+        
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        
+        if (session.payment_status === 'paid') {
+            const { transactionId, appId } = session.metadata;
+            if (appId === "quickgpt" && transactionId) {
+                const transaction = await Transaction.findOne({ _id: transactionId, isPaid: false });
+                if (transaction) {
+                    await User.updateOne({ _id: transaction.userId }, { $inc: { credits: transaction.credits } });
+                    transaction.isPaid = true;
+                    await transaction.save();
+                    return res.json({ success: true, message: "Payment verified and credits added" });
+                } else {
+                    return res.json({ success: true, message: "Payment already verified" });
+                }
+            }
+        }
+        res.json({ success: false, message: "Payment not completed" });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
     }
 }

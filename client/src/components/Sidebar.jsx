@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios' // Ensure axios is imported
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
-    const { chats, setSelectedChat, theme, setTheme, user, navigate, createNewChat, setChats, fetchUsersChats, setToken, token } = useAppContext()
+    const { chats, setSelectedChat, theme, setTheme, user, navigate, createNewChat, setChats, setToken, token } = useAppContext()
     const [search, setSearch] = useState('')
 
     const logout = () => {
@@ -42,31 +42,31 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
     }
 
     return (
-        <div className={`flex flex-col h-screen min-w-72 p-5 dark:bg-gradient-to-b from-[#242124] to-[#000000]/30 border-r border-[#80609F]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1 ${!isMenuOpen && 'max-md:-translate-x-full'}`}>
+        <div className={`flex flex-col h-screen min-w-72 p-5 bg-surface-soft/40 dark:bg-dark-surface-soft/40 backdrop-blur-2xl border-r border-white/30 dark:border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.05)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)] transition-all duration-500 max-md:absolute left-0 z-10 ${!isMenuOpen && 'max-md:-translate-x-full'}`}>
             {/* Logo */}
             <img src={theme === 'dark' ? assets.logo_full : assets.logo_full_dark} alt="" className='w-full max-w-48' />
             {/* New chat button */}
-            <button onClick={createNewChat} className='flex justify-center items-center w-full py-2 mt-10 text-white bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-sm rounded-md cursor-pointer'>
+            <button onClick={createNewChat} className='flex justify-center items-center w-full py-3 mt-10 text-ink dark:text-white bg-white/30 dark:bg-black/30 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-white/50 dark:border-white/20 text-sm rounded-[12px] font-semibold cursor-pointer hover:bg-white/40 dark:hover:bg-black/50 transition-all'>
                 <span className='mr-2 text-xl'>New Chat</span>
             </button>
 
             {/* Search Conversations */}
-            <div className="flex items-center gap-2 p-3 mt-4 border border-gray-400 dark:border-white/20 rounded-md">
+            <div className="flex items-center gap-2 p-3 mt-4 border border-white/40 dark:border-white/10 shadow-sm dark:shadow-[0_4px_16px_rgba(0,0,0,0.1)] bg-white/20 dark:bg-black/20 backdrop-blur-xl rounded-[12px] focus-within:border-white/60 dark:focus-within:border-white/30 focus-within:shadow-md transition-all">
                 <img src={assets.search_icon} alt="" className='w-4 not-dark:invert' />
-                <input onChange={(e) => { setSearch(e.target.value) }} value={search} type="text" placeholder='Search conversations' className='text-xs placeholder:text-gray-400 outline-none' />
+                <input onChange={(e) => { setSearch(e.target.value) }} value={search} type="text" placeholder='Search conversations' className='text-xs bg-transparent text-ink dark:text-dark-ink placeholder:text-muted dark:placeholder:text-dark-muted outline-none w-full' />
             </div>
 
             {/* Recent Chats */}
-            {chats.length > 0 && <p className='mt-4 text-sm'>Recent Chats</p>}
+            {chats.length > 0 && <p className='mt-4 text-sm text-ink dark:text-dark-ink font-medium'>Recent Chats</p>}
             <div className='flex-1 overflow-y-scroll mt-3 text-sm space-y-3'>
                 {
                     chats.filter((chat) => chat.messages[0] ? chat.messages[0]?.content.toLowerCase().includes(search.toLowerCase()) : chat.name.toLowerCase().includes(search.toLowerCase())).map((chat) => (
-                        <div onClick={() => { navigate('/'); setSelectedChat(chat); setIsMenuOpen(false) }} key={chat._id} className='p-2 px-4 dark:bg-[#57317C]/10 border border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer flex justify-between group'>
+                        <div onClick={() => { navigate('/'); setSelectedChat(chat); setIsMenuOpen(false) }} key={chat._id} className='p-2 px-4 bg-white/10 dark:bg-black/20 backdrop-blur-md hover:bg-white/30 dark:hover:bg-black/40 hover:shadow-md border border-white/30 dark:border-white/10 rounded-[12px] cursor-pointer flex justify-between group transition-all'>
                             <div>
-                                <p className='truncate w-full'>
+                                <p className='truncate w-full text-ink dark:text-dark-ink'>
                                     {chat.messages.length > 0 ? chat.messages[0].content.slice(0, 32) : chat.name}
                                 </p>
-                                <p className='text-xs text-gray-500 dark:text-[#B1A6C0]'>
+                                <p className='text-xs text-muted dark:text-dark-muted'>
                                     {moment(chat.updatedAt).fromNow()}
                                 </p>
                             </div>
@@ -77,25 +77,25 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             </div>
 
             {/* Community images */}
-            <div onClick={() => { navigate('/community'); setIsMenuOpen(false) }} className='flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-103 transition-all '>
+            <div onClick={() => { navigate('/community'); setIsMenuOpen(false) }} className='flex items-center gap-2 p-3 mt-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl shadow-md dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-white/40 dark:border-white/10 hover:bg-white/30 dark:hover:bg-black/40 hover:shadow-lg rounded-[12px] cursor-pointer transition-all '>
                 <img src={assets.gallery_icon} alt="" className='w-4.5 not-dark:invert' />
-                <div className='flex flex-col text-sm'>
+                <div className='flex flex-col text-sm text-ink dark:text-dark-ink'>
                     <p>Community Images</p>
                 </div>
             </div>
 
             {/* Credit purchase option */}
-            <div onClick={() => { navigate('/credits'); setIsMenuOpen(false) }} className='flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-103 transition-all '>
+            <div onClick={() => { navigate('/credits'); setIsMenuOpen(false) }} className='flex items-center gap-2 p-3 mt-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl shadow-md dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-white/40 dark:border-white/10 hover:bg-white/30 dark:hover:bg-black/40 hover:shadow-lg rounded-[12px] cursor-pointer transition-all '>
                 <img src={assets.diamond_icon} alt="" className='w-4.5 dark:invert' />
-                <div className='flex flex-col text-sm'>
-                    <p>Credits: {user?.credits}</p>
-                    <p className='text-xs text-gray-400'>Purchase credits to use QuickGPT</p>
+                <div className='flex flex-col text-sm text-ink dark:text-dark-ink'>
+                    <p className='font-medium'>Credits: {user?.credits}</p>
+                    <p className='text-xs text-muted dark:text-dark-muted'>Purchase credits to use QuickGPT</p>
                 </div>
             </div>
 
             {/* Dark mode toggle */}
-            <div className='flex items-center justify-between gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md '>
-                <div className='flex items-center gap-2 text-sm'>
+            <div className='flex items-center justify-between gap-2 p-3 mt-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl shadow-md dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-white/40 dark:border-white/10 rounded-[12px] transition-all '>
+                <div className='flex items-center gap-2 text-sm text-ink dark:text-dark-ink'>
                     <img src={assets.theme_icon} alt="" className='w-4 not-dark:invert' />
                     <p>Dark Mode</p>
                 </div>
@@ -106,16 +106,21 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                         className='sr-only peer'
                         checked={theme === 'dark'}
                     />
-                    <div className={`w-9 h-5 rounded-full transition-all ${theme === 'dark' ? 'bg-purple-600' : 'bg-gray-400'}`}>
+                    <div className={`w-9 h-5 rounded-full transition-all ${theme === 'dark' ? 'bg-accent' : 'bg-muted'}`}>
                         <span className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-transform ${theme === 'dark' ? 'translate-x-4' : 'left-1'}`}></span>
                     </div>
                 </label>
             </div>
 
             {/* User Account */}
-            <div className='flex items-center gap-3 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer group '>
-                <img src={assets.user_icon} alt="" className='w-7 rounded-full' />
-                <p className='flex-1 text-sm dark:text-primary truncate '>{user ? user.name : 'Login Your Account'}</p>
+            <div className='flex items-center gap-3 p-3 mt-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl shadow-md dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-white/40 dark:border-white/10 hover:bg-white/30 dark:hover:bg-black/40 hover:shadow-lg rounded-[12px] cursor-pointer transition-all group '>
+                <div className="w-8 h-8 rounded-full bg-brand-teal/20 dark:bg-brand-mint/20 text-brand-teal dark:text-brand-mint flex items-center justify-center border border-brand-teal/30 dark:border-brand-mint/30 shadow-sm">
+                    <svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <p className='flex-1 text-sm text-ink dark:text-dark-ink font-medium truncate '>{user ? user.name : 'Login Your Account'}</p>
                 {user && <img onClick={logout} src={assets.logout_icon} className='h-5 cursor-pointer block md:hidden group-hover:block not-dark:invert' />}
             </div>
 

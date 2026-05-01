@@ -60,9 +60,9 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
-      <p className="text-2xl font-medium m-auto">
-        <span className="text-purple-700">User</span> {state === "login" ? "Login" : "Sign Up"}
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-muted dark:text-dark-muted rounded-[16px] border border-hairline dark:border-dark-hairline bg-surface-card/80 dark:bg-dark-surface-card/80 backdrop-blur-md shadow-xl shadow-black/5 dark:shadow-black/20">
+      <p className="text-2xl font-medium m-auto text-ink dark:text-dark-ink">
+        <span className="text-accent dark:text-[#5eead4]">User</span> {state === "login" ? "Login" : "Sign Up"}
       </p>
       {state === "register" && (
         <div className="w-full">
@@ -71,7 +71,7 @@ const Login = () => {
             onChange={(e) => setName(e.target.value)} 
             value={name} 
             placeholder="Enter your name" 
-            className="border border-gray-200 rounded w-full p-2 mt-1 outline-purple-700" 
+            className="border border-hairline/50 dark:border-dark-hairline/50 shadow-sm rounded-[12px] bg-canvas/40 dark:bg-dark-canvas/40 backdrop-blur-md text-ink dark:text-dark-ink w-full p-2 mt-1 focus:outline-accent dark:focus:outline-[#5eead4]" 
             type="text" 
             required 
             minLength={3}
@@ -84,7 +84,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)} 
           value={email} 
           placeholder="Enter your email" 
-          className="border border-gray-200 rounded w-full p-2 mt-1 outline-purple-700" 
+          className="border border-hairline/50 dark:border-dark-hairline/50 shadow-sm rounded-[12px] bg-canvas/40 dark:bg-dark-canvas/40 backdrop-blur-md text-ink dark:text-dark-ink w-full p-2 mt-1 focus:outline-accent dark:focus:outline-[#5eead4]" 
           type="email" 
           required 
         />
@@ -95,7 +95,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)} 
           value={password} 
           placeholder="Enter your password" 
-          className="border border-gray-200 rounded w-full p-2 mt-1 outline-purple-700" 
+          className="border border-hairline/50 dark:border-dark-hairline/50 shadow-sm rounded-[12px] bg-canvas/40 dark:bg-dark-canvas/40 backdrop-blur-md text-ink dark:text-dark-ink w-full p-2 mt-1 focus:outline-accent dark:focus:outline-[#5eead4]" 
           type="password" 
           required 
           minLength={6}
@@ -103,17 +103,17 @@ const Login = () => {
       </div>
       {state === "register" ? (
         <p>
-          Already have account? <span onClick={() => setState("login")} className="text-purple-700 cursor-pointer hover:underline">click here</span>
+          Already have account? <span onClick={() => setState("login")} className="text-accent dark:text-[#5eead4] font-medium cursor-pointer hover:underline">click here</span>
         </p>
       ) : (
         <p>
-          Create an account? <span onClick={() => setState("register")} className="text-purple-700 cursor-pointer hover:underline">click here</span>
+          Create an account? <span onClick={() => setState("register")} className="text-accent dark:text-[#5eead4] font-medium cursor-pointer hover:underline">click here</span>
         </p>
       )}
       <button 
         type="submit" 
         disabled={loading}
-        className={`bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-2 rounded-md cursor-pointer ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+        className={`bg-primary dark:bg-white transition-colors text-on-primary dark:text-ink w-full py-3 rounded-[12px] font-semibold cursor-pointer hover:opacity-90 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
       >
         {loading ? 'Please wait...' : (state === "register" ? "Create Account" : "Login")}
       </button>

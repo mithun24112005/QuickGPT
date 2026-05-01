@@ -1,26 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Rubik+Glitch&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark,.dark *));
 
-*{
-    font-family: "Outfit", sans-serif;
+* {
+    font-family: "Inter", sans-serif;
 }
 
-@theme{
-    --color-primary: #E6CCFF;
-}
-::-webkit-scrollbar{
-    display:none;
+@theme {
+    /* Base Neutral Colors */
+    --color-canvas: #fffaf0; /* Cream */
+    --color-surface-soft: #faf5e8;
+    --color-surface-card: #f5f0e0;
+    --color-hairline: #e5e5e5;
+    
+    /* Text Colors */
+    --color-ink: #0a0a0a;
+    --color-body: #3a3a3a;
+    --color-muted: #6a6a6a;
+
+    /* Accent & Primary (Teal theme) */
+    --color-primary: #0a0a0a; /* Near-black for primary CTA */
+    --color-on-primary: #ffffff;
+    --color-accent: #1a3a3a; /* Deep Teal Accent */
+
+    /* Clay Design Colors */
+    --color-brand-pink: #ff4d8b;
+    --color-brand-teal: #1a3a3a;
+    --color-brand-lavender: #b8a4ed;
+    --color-brand-peach: #ffb084;
+    --color-brand-ochre: #e8b94a;
+    --color-brand-mint: #a4d4c5;
+    --color-brand-coral: #ff6b5a;
+
+    /* Dark Mode Defaults - Soft Charcoal */
+    --color-dark-canvas: #121414;
+    --color-dark-surface-soft: #1a1d1d;
+    --color-dark-surface-card: #202424;
+    --color-dark-hairline: #2a3030;
+    
+    --color-dark-ink: #fffaf0;
+    --color-dark-body: #d1d5db;
+    --color-dark-muted: #9ca3af;
 }
 
-.reset-tw:not(pre):not(code){
-    all:revert;
+::-webkit-scrollbar {
+    display: none;
 }
 
-.loader div:nth-last-child(2){
+.reset-tw:not(pre):not(code) {
+    all: revert;
+}
+
+.loader div:nth-last-child(2) {
     animation-delay: 0.2s;
 }
-.loader div:nth-last-child(3){
+.loader div:nth-last-child(3) {
     animation-delay: 0.4s;
 }
