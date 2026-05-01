@@ -1,4 +1,3 @@
-import { request, response } from "express";
 import Stripe from "stripe";
 import Transaction from "../models/Transaction.js";
 import User from "../models/user.js";

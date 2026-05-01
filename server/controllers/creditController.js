@@ -35,11 +35,19 @@ export const getPlans=async (req,res) => {
     }
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+// lazy Stripe initialization to avoid crash when env vars are missing at module load time
+let _stripe = null;
+const getStripe = () => {
+    if (!_stripe) {
+        _stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    }
+    return _stripe;
+};
 
 // api controller for purchasing plan
 export const purchasePlan=async (req,res) => {
     try {
+        const stripe = getStripe();
         const {planId}=req.body
         const userId=req.user._id
         const plan=plans.find(plan=>plan._id===planId)
@@ -85,6 +93,7 @@ export const purchasePlan=async (req,res) => {
 // verify payment controller
 export const verifyPayment = async (req, res) => {
     try {
+        const stripe = getStripe();
         const { sessionId } = req.body;
         if (!sessionId) {
             return res.json({ success: false, message: "Missing session ID" });

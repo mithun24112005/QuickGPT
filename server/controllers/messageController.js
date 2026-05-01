@@ -3,8 +3,8 @@
 import Chat from "../models/Chat.js"
 import User from "../models/user.js"
 import axios from "axios"
-import imagekit from "../configs/imageKit.js"
-import geminiAI from '../configs/openai.js'
+import getImageKit from "../configs/imageKit.js"
+import getGeminiAI from '../configs/openai.js'
 
 export const textMessageController = async (req, res) => {
     try {
@@ -21,6 +21,7 @@ export const textMessageController = async (req, res) => {
         }
         chat.messages.push({ role: "user", content: prompt, timestamp: Date.now(), isImage: false })
 
+        const geminiAI = getGeminiAI()
         const response = await geminiAI.models.generateContent({
             model: "gemini-3-flash-preview",
             contents: prompt,
@@ -88,6 +89,7 @@ export const imageMessageController = async (req, res) => {
         const base64File = `data:image/png;base64,${base64Image}`
 
         // upload to imagekit media library using new API (files.upload)
+        const imagekit = getImageKit()
         const uploadResponse = await imagekit.files.upload({
             file: base64File,
             fileName: `${Date.now()}.png`,

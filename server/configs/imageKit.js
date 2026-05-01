@@ -1,9 +1,16 @@
 import ImageKit from '@imagekit/nodejs';
 
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
-});
+let imagekit = null;
 
-export default imagekit;
+const getImageKit = () => {
+    if (!imagekit) {
+        imagekit = new ImageKit({
+            publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+            privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+            urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+        });
+    }
+    return imagekit;
+};
+
+export default getImageKit;

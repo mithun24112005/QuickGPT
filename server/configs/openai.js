@@ -1,7 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
-});
+let ai = null;
 
-export default ai;
+const getGeminiAI = () => {
+    if (!ai) {
+        ai = new GoogleGenAI({
+            apiKey: process.env.GEMINI_API_KEY
+        });
+    }
+    return ai;
+};
+
+export default getGeminiAI;
